@@ -1,10 +1,10 @@
 const assert = require('assert')
-
 const ganache = require('ganache-cli')
-
 const Web3 = require('web3')
 
-const { interface, bytecode } = require('../compile')
+const compile = require('../compile')
+
+const { abi, evm } = compile
 
 describe('Inbox contract', () => {
 
@@ -23,8 +23,8 @@ describe('Inbox contract', () => {
 
         const Contract = web3.eth.Contract
 
-        inbox = await new Contract(JSON.parse(interface))
-            .deploy({ data: bytecode, arguments: contractInitializeList })
+        inbox = await new Contract(abi)
+            .deploy({ data: evm.bytecode.object, arguments: contractInitializeList })
             .send({
                 from: accounts[0],
                 gas: contractGas

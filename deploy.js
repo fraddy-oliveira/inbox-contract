@@ -4,7 +4,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const Web3 = require('web3');
 
-const { interface, bytecode } = require('./compile')
+const { abi, evm } = require('./compile')
 
 const mnemonic = Mnemonic
 
@@ -21,8 +21,8 @@ const deploy = async () => {
 
     const Contract = web3.eth.Contract
 
-    const contract = await new Contract(JSON.parse(interface))
-        .deploy({ data: bytecode, arguments: ['Hey there'] })
+    const contract = await new Contract(abi)
+        .deploy({ data: evm.bytecode.object, arguments: ['Hey there'] })
         .send({ from: accounts[0], gas: '1000000' })
 
     console.log(`Contract is deployed at ${contract.options.address}`)
